@@ -146,13 +146,32 @@ public:
 	static Shop input(Shop ourshop) {
 		int quantityProd;
 		Item prod[MAX];
-		do {
+		/*do {
 			cout << "How many products do you have in your shop?" << endl;
 			rewind(stdin);
 			cin >> quantityProd;
 			if (cin.fail())
 				cin.clear();
-		} while (quantityProd <= 0 || quantityProd > MAX);
+		} while (quantityProd <= 0 || quantityProd > MAX);*/
+		
+			try {
+				cout << "How many products do you have in your shop?" << endl;
+				rewind(stdin);
+				cin >> quantityProd;
+				if (cin.fail())
+					cin.clear();
+				if (quantityProd <= 0 || quantityProd > MAX) {
+					cin.clear();
+					throw 1;
+				}
+			}
+			catch (int quantityProd)
+			{
+				cerr << "Sorry, some problems with input. Press any key to exit." << endl;
+				_getch();
+				exit(0);
+			}
+		
 		ourshop = Shop(quantityProd);
 
 		for (int i = 0; i < quantityProd; i++) {
