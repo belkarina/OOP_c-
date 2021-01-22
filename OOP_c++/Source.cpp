@@ -27,6 +27,12 @@ public:
 		this->name = newName;
 		this->price = newPrice;
 	}
+	// Copy constructor, shallow copy
+	Item(const Item& oldItem) {
+		this->country = oldItem.country;
+		this->name = oldItem.name;
+		this->price = oldItem.price;
+	}
 
 	string getCountry() {
 		return(country);
@@ -126,9 +132,15 @@ public:
 	Shop(int newQuantityProd) {
 		this->quantityProd = newQuantityProd;
 	}
+
 	// return by address
 	int getQuantityProd() {
 		return(quantityProd);
+	}
+
+	void setProd(Item item, int i) {
+		if (i < quantityProd && i >= 0)
+			this->prod[i] = item;
 	}
 
 	static Shop input(Shop ourshop) {
@@ -141,7 +153,7 @@ public:
 			if (cin.fail())
 				cin.clear();
 		} while (quantityProd <= 0 || quantityProd > MAX);
-		ourshop.quantityProd = quantityProd;
+		ourshop = Shop(quantityProd);
 
 		for (int i = 0; i < quantityProd; i++) {
 			ourshop.prod[i] = Item::input(i);
@@ -154,7 +166,8 @@ public:
 				cin.clear();
 			if (num > 0 && num < (quantityProd - i)) {
 				for (int j = i + 1; j <= (i + num); j++) {
-					ourshop.prod[j] = ourshop.prod[i];
+					ourshop.prod[j] = Item(ourshop.prod[i]);
+					//ourshop.prod[j] = ourshop.prod[i];
 				}
 				i = i + num;
 			}	
@@ -235,76 +248,43 @@ int main() {
 	int sum = ourshop + ourshop;
 	cout << "Sum price = " << sum << endl << endl;
 	ourshop = ourshop.sale(ourshop);
-	_getch();
-	system("cls");
-	cout << "Price of 1st item = " << ourshop.returnPrice(0) << endl;
-	cout << "Price of 1st item = " << ourshop++.returnPrice(0) << endl;
-	cout << "Price of 1st item = " << ourshop.returnPrice(0) << endl;
-	cout << "Price of 1st item = " << (++ourshop).returnPrice(0) << endl;
-
-	cout << "Program is over. Press any key to exit.";
-
-	/*cout << "Now it is a static object:" << endl;
-	Item staticItem = Item();
-
-	cout << "Item created, Init used." << endl;
-	staticItem.output(staticItem, 0);
-
-	cout << "Now we need enter values of item:" << endl;
-	staticItem = Item::input(0);
-	staticItem.output(staticItem, 0);
-
-	cout << "If we are add 2 equal items, we will get:" << endl;
-	cout << "Sum price = " << Item::add(&staticItem, &staticItem) << endl << endl;
-	staticItem.output(staticItem, 0);
-
-	cout << "Sale! 50%!" << endl;
-	staticItem.sale(&staticItem, 1);
-	staticItem.output(staticItem, 0);
-
-	cout << "Sale is over!" << endl;
-	staticItem.markup(&staticItem, 1);
-	staticItem.output(staticItem, 0);
-	
 	cout << "Press any key to continue";
+
 	_getch();
+	//system("cls");
+	//cout << "Price of 1st item = " << ourshop.returnPrice(0) << endl;
+	//cout << "Price of 1st item = " << ourshop++.returnPrice(0) << endl;
+	//cout << "Price of 1st item = " << ourshop.returnPrice(0) << endl;
+	//cout << "Price of 1st item = " << (++ourshop).returnPrice(0) << endl;
 
 	system("cls");
 
 	cout << "Now it is a dynamic object:" << endl;
-	Item* dynamicItem = new Item("Something", "Somewhere", 100);
-	dynamicItem->output(dynamicItem[0], 0);
-	delete dynamicItem;
-
-	cout << "Press any key to continue" << endl;
+	Shop* dynamicShop = new Shop();
+	int amount = 2;
+	dynamicShop = new Shop(amount);
+	dynamicShop[0] = Shop::input(dynamicShop[0]);
+	dynamicShop[0] = Shop::output(dynamicShop[0], 0);
+	Item* dynamicItem = new Item("dynamic", "item", 18);
+	dynamicShop[0].setProd(dynamicItem[0], 0);
+	dynamicShop[0] = Shop::output(dynamicShop[0], 0);
+	cout << "Press any key to continue";
 	_getch();
+	system("cls");
 
-	cout << "Now it is a dynamic array of objects:" << endl;
-	int num;
-	do {
-		cout << "How many objects do you want to input?" << endl;
-		rewind(stdin);
-		cin >> num;
-		if (cin.fail())
-			cin.clear();
-	} while (num <= 0);
-	cout << endl;
+	// Array with constructor with one param 
+	Shop arrShop[2] = { amount, ++amount };
+	for (int i = 0; i < 2; i++) {
+		arrShop[i] = Shop::output(arrShop[i], 0);
+	}
 
-	Item* badItem = (Item*)calloc(num, sizeof(Item));
-	for (int i = 0; i < num; i++)
-		badItem[i] = Item::input(i);
- 
-	cout << "Now we are showing your last object:" << endl;
-	badItem[num - 1].output(badItem[num-1], num - 1);
 
-	free(badItem);
+	//dynamicShop = dynamicShop.output(dynamicShop, 1);
+	//dynamicItem->output(dynamicItem[0], 0);
+	//delete dynamicItem;
 
-	Item* dynamicItem1 = new Item[5];
-	delete[] dynamicItem1;
+	cout << "Program is over. Press any key to exit.";
 
-	Item* badItem2 = (Item*)malloc(10 * sizeof(Item));
-	badItem2 = (Item*)realloc(badItem2, 20 * sizeof(Item));
-	free(badItem2);*/
 	_getch();
 	return 0;
 }
