@@ -297,6 +297,18 @@ int main() {
 		arrShop[i] = Shop::output(arrShop[i], 0);
 	}
 
+	system("cls");
+	cout << "Now is a twoArrShop:\n" << endl;
+
+	Shop twoArrShop[2][2] = {1,1,1,1};
+
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 2; j++)
+			twoArrShop[i][j].output(twoArrShop[i][j], 0);
+		cout << endl;
+	}
+
 
 	//dynamicShop = dynamicShop.output(dynamicShop, 1);
 	//dynamicItem->output(dynamicItem[0], 0);
